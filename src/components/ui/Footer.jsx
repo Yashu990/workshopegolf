@@ -34,7 +34,7 @@ export function Footer() {
     <footer className="bg-[#002B18] text-white pt-16 pb-8 px-6 overflow-hidden relative">
       {/* Background Decoration */}
       <div className="absolute bottom-0 right-0 opacity-5 pointer-events-none select-none">
-        <h1 className="text-[150px] font-black leading-none translate-y-12 translate-x-12">WORKSHOPE</h1>
+        <h1 className="text-[80px] md:text-[150px] font-black leading-none translate-y-12 translate-x-12">WORKSHOPE</h1>
       </div>
 
       <div className="max-w-7xl mx-auto relative z-10">
