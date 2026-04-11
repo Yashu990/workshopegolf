@@ -74,7 +74,7 @@ export function WebsiteNavbar() {
             className="absolute top-0 left-0 w-full bg-[#004225] h-[90px] flex items-center px-4 md:px-10 z-[110] shadow-2xl"
           >
             <div className="max-w-[1200px] w-full mx-auto flex items-center gap-4">
-              <Search className="text-[#C9A227]" size={24} />
+              <img src="/logo.png" className="w-8 h-8 object-cover rounded-lg" style={{ mixBlendMode: 'multiply', filter: 'brightness(1.5)' }} alt="Logo" />
               <input 
                 autoFocus
                 type="text" 
@@ -98,11 +98,11 @@ export function WebsiteNavbar() {
           
           {/* Logo - Concept 1 Luxury Crest */}
           <Link to="/" className="flex items-center gap-2 md:gap-3 group shrink-0">
-            <div className="w-10 h-10 md:w-12 md:h-12 overflow-hidden transition-all group-hover:scale-110">
+            <div className="w-10 h-10 md:w-14 md:h-14 overflow-hidden transition-all group-hover:scale-110">
               <img 
                 src="/logo.png" 
                 className="w-full h-full object-cover" 
-                style={{ mixBlendMode: 'multiply', filter: 'brightness(1.1) contrast(1.1)' }}
+                style={{ mixBlendMode: 'multiply', filter: 'brightness(1.2)' }}
                 alt="WorkshopeGolf Logo" 
               />
             </div>

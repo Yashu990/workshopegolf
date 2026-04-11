@@ -57,7 +57,7 @@ export default function Landing() {
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-center">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 1, ease: "easeOut" }}>
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white text-[13px] font-bold uppercase tracking-widest mb-8 border border-white/10">
-              <Zap className="w-4 h-4 text-[#C9A227] fill-[#C9A227]" /> The Future of Golf Improvement
+              <img src="/logo.png" className="w-5 h-5 object-cover rounded-md" style={{ mixBlendMode: 'multiply' }} alt="WG" /> The Future of Golf Improvement
             </div>
             <h1 className="text-5xl md:text-8xl font-black tracking-tighter text-white leading-[1] mb-8">
               MASTER YOUR SWING <br />

@@ -60,11 +60,11 @@ export function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-10 mb-16">
           <div className="col-span-2 lg:col-span-2">
              <div className="flex items-center gap-4 mb-8 group">
-               <div className="w-12 h-12 overflow-hidden transition-all group-hover:scale-110">
+               <div className="w-14 h-14 overflow-hidden transition-all group-hover:scale-110">
                  <img 
                    src="/logo.png" 
                    className="w-full h-full object-cover" 
-                   style={{ mixBlendMode: 'multiply', filter: 'brightness(1.1) contrast(1.1)' }}
+                   style={{ mixBlendMode: 'multiply', filter: 'brightness(1.2)' }}
                    alt="WorkshopeGolf Logo" 
                  />
                </div>
