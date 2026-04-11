@@ -48,16 +48,50 @@ const navigationLinks = [
 export function WebsiteNavbar() {
   const [hoveredItem, setHoveredItem] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [expandedMobileItem, setExpandedMobileItem] = useState(null);
   const location = useLocation();
 
-  // Close mobile menu on route change
+  // Close overlays on route change
   useEffect(() => {
     setMobileMenuOpen(false);
+    setSearchOpen(false);
+    setCartOpen(false);
+    setUserMenuOpen(false);
   }, [location]);
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] font-sans">
+      {/* Search Overlay */}
+      <AnimatePresence>
+        {searchOpen && (
+          <motion.div 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="absolute top-0 left-0 w-full bg-[#004225] h-[90px] flex items-center px-4 md:px-10 z-[110] shadow-2xl"
+          >
+            <div className="max-w-[1200px] w-full mx-auto flex items-center gap-4">
+              <Search className="text-[#C9A227]" size={24} />
+              <input 
+                autoFocus
+                type="text" 
+                placeholder="Search courses, gear, or members..." 
+                className="w-full bg-transparent border-none outline-none text-white text-xl md:text-2xl font-bold placeholder:text-white/20"
+              />
+              <button 
+                onClick={() => setSearchOpen(false)}
+                className="p-2 text-white hover:text-[#C9A227] transition-colors"
+              >
+                <X size={28} strokeWidth={3} />
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Main Navbar */}
       <nav className="bg-[#004225] h-[70px] flex items-center border-b border-white/5 shadow-2xl">
         <div className="max-w-[1700px] w-full mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -134,12 +168,21 @@ export function WebsiteNavbar() {
             </div>
 
             <div className="flex items-center gap-1 md:gap-3">
-              <button className="text-white hover:text-[#C9A227] p-2 transition-colors"><Search size={18} /></button>
+              <button 
+                onClick={() => setSearchOpen(true)}
+                className="text-white hover:text-[#C9A227] p-2 transition-colors"
+              >
+                <Search size={18} />
+              </button>
               
-              <Link to="/shop" className="relative p-2 text-white hover:text-[#C9A227] transition-colors">
+              <button 
+                onClick={() => setCartOpen(true)}
+                className="relative p-2 text-white hover:text-[#C9A227] transition-colors"
+                style={{ background: 'none', border: 'none' }}
+              >
                 <ShoppingCart size={18} />
-                <span className="absolute top-0 right-0 w-4 h-4 bg-[#C9A227] text-[#004225] text-[9px] font-black rounded-full flex items-center justify-center border-2 border-[#004225]">0</span>
-              </Link>
+                <span className="absolute top-0 right-0 w-4 h-4 bg-[#C9A227] text-[#004225] text-[9px] font-black rounded-full flex items-center justify-center border-2 border-[#004225]">2</span>
+              </button>
 
               {/* Mobile Menu Toggle */}
               <button 
@@ -149,10 +192,49 @@ export function WebsiteNavbar() {
                 {mobileMenuOpen ? <X size={24} strokeWidth={2.5} /> : <Menu size={24} strokeWidth={2.5} />}
               </button>
 
-              <div className="hidden sm:flex items-center gap-1.5 group cursor-pointer text-white hover:text-[#C9A227] ml-2">
+              <div 
+                className="relative hidden sm:flex items-center gap-1.5 group cursor-pointer text-white hover:text-[#C9A227] ml-2"
+                onMouseEnter={() => setUserMenuOpen(true)}
+                onMouseLeave={() => setUserMenuOpen(false)}
+              >
                 <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center group-hover:bg-[#C9A227]/20 border border-white/5 transition-all">
                    <User size={14} className="group-hover:text-[#C9A227]" />
                 </div>
+                
+                <AnimatePresence>
+                  {userMenuOpen && (
+                    <motion.div 
+                      initial={{ opacity: 0, y: 10, x: -100 }}
+                      animate={{ opacity: 1, y: 0, x: -100 }}
+                      exit={{ opacity: 0, y: 10, x: -100 }}
+                      className="absolute top-[35px] right-0 w-[200px] bg-white shadow-4xl rounded-xl py-3 overflow-hidden z-[120]"
+                    >
+                      <div className="px-4 py-2 border-b border-black/5 mb-2">
+                        <p className="text-[10px] font-black text-black/30 uppercase tracking-[0.2em]">Member Access</p>
+                      </div>
+                      <Link 
+                        to="/login"
+                        className="block px-6 py-2 text-[#004225] text-[13px] font-bold hover:bg-[#004225]/5 hover:text-[#C9A227] transition-all"
+                      >
+                        Sign In
+                      </Link>
+                      <Link 
+                        to="/signup"
+                        className="block px-6 py-2 text-[#004225] text-[13px] font-bold hover:bg-[#004225]/5 hover:text-[#C9A227] transition-all"
+                      >
+                        Join the Tour
+                      </Link>
+                      <div className="mt-2 pt-2 border-t border-black/5">
+                        <Link 
+                          to="/support"
+                          className="block px-6 py-2 text-[#004225]/40 text-[11px] font-bold hover:text-[#C9A227] transition-all"
+                        >
+                          Help & Support
+                        </Link>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
@@ -252,7 +334,89 @@ export function WebsiteNavbar() {
           </>
         )}
       </AnimatePresence>
+
+      {/* Cart Drawer */}
+      <AnimatePresence>
+        {cartOpen && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setCartOpen(false)}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm h-screen z-[105]"
+            />
+            <motion.div 
+              initial={{ x: '100%', opacity: 0.5 }}
+              animate={{ x: 0, opacity: 1 }}
+              exit={{ x: '100%', opacity: 0.5 }}
+              transition={{ type: 'spring', damping: 25, stiffness: 200 }}
+              className="fixed top-0 right-0 w-full md:w-[450px] h-screen bg-white z-[110] shadow-[0_0_100px_rgba(0,0,0,0.5)] flex flex-col"
+            >
+              <div className="p-8 bg-[#004225] flex items-center justify-between">
+                <div>
+                  <h3 className="text-white font-black text-2xl uppercase tracking-tighter leading-none mb-1">Your Selection</h3>
+                  <p className="text-[#C9A227] text-[10px] font-bold uppercase tracking-widest">Premium Performance Gear</p>
+                </div>
+                <button onClick={() => setCartOpen(false)} className="bg-white/10 p-2 rounded-xl text-white hover:bg-white/20 transition-all">
+                  <X size={24} />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto p-8 space-y-8">
+                {/* Cart Item 1 */}
+                <div className="flex gap-6 items-center">
+                  <div className="w-24 h-24 bg-[#FAFAF7] rounded-2xl overflow-hidden border border-black/5 flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?auto=format&fit=crop&q=80&w=200" alt="Special Edition Driver" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-[#004225] font-black uppercase tracking-tighter text-lg leading-tight mb-1">Tour Precision Driver</h4>
+                    <p className="text-black/40 text-[11px] font-bold uppercase tracking-widest mb-3">Limited Edition Gold Series</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#C9A227] font-black text-xl">$599.00</span>
+                      <div className="flex items-center gap-3 bg-[#FAFAF7] px-3 py-1.5 rounded-lg border border-black/5">
+                        <button className="text-[#004225] font-black">-</button>
+                        <span className="text-[#004225] font-black text-sm">1</span>
+                        <button className="text-[#004225] font-black">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cart Item 2 */}
+                <div className="flex gap-6 items-center">
+                  <div className="w-24 h-24 bg-[#FAFAF7] rounded-2xl overflow-hidden border border-black/5 flex items-center justify-center">
+                    <img src="https://images.unsplash.com/photo-1593111774240-d529f12cf4bb?auto=format&fit=crop&q=80&w=200" alt="Clubhouse Polo" className="w-full h-full object-cover" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="text-[#004225] font-black uppercase tracking-tighter text-lg leading-tight mb-1">Clubhouse Elite Polo</h4>
+                    <p className="text-black/40 text-[11px] font-bold uppercase tracking-widest mb-3">Breathable Emerald Tech</p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-[#C9A227] font-black text-xl">$85.00</span>
+                      <div className="flex items-center gap-3 bg-[#FAFAF7] px-3 py-1.5 rounded-lg border border-black/5">
+                        <button className="text-[#004225] font-black">-</button>
+                        <span className="text-[#004225] font-black text-sm">1</span>
+                        <button className="text-[#004225] font-black">+</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-8 border-t border-black/5 space-y-6 bg-[#FAFAF7]">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#004225]/40 font-bold uppercase tracking-widest text-xs">Subtotal</span>
+                  <span className="text-[#004225] font-black text-2xl tracking-tighter">$684.00</span>
+                </div>
+                <button className="w-full bg-[#004225] text-white h-16 rounded-2xl font-black uppercase tracking-widest text-sm shadow-2xl hover:bg-[#005530] transition-all">
+                  Secure Checkout
+                </button>
+                <p className="text-center text-[10px] text-black/20 font-bold uppercase tracking-widest">Complimentary Express Shipping Included</p>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
-
